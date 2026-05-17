@@ -56,5 +56,20 @@ def view_ticket(ticket_id):
     }
     return render_template('ticket_detail.html', ticket=mock_ticket)
 
+
+
+# --- ADMIN ROUTES ---
+
+# Route for Admin Screen 1: Login
+@app.route('/admin')
+def admin_login():
+    return render_template('admin_login.html')
+
+# Temporary placeholder for the Admin Dashboard
+@app.route('/admin/dashboard')
+def admin_dashboard():
+    return "<h1>Admin Dashboard Coming Soon!</h1>"
+
+
 if __name__ == '__main__':
     app.run(debug=True)
