@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyosBayan - Public Board</title>
+    <style>
+        body {
+            background-color: #1a1a1a; 
+            color: #f5f5dc; 
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            padding-top: 60px; /* Space for the back button */
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #f5f5dc; 
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid transparent;
+        }
+
+        .back-btn:hover {
+            border: 1px solid #4CAF50;
+            background-color: rgba(76, 175, 80, 0.1); 
+        }
+
+        /* Container that holds everything and keeps it from getting too wide on PCs */
+        .board-container {
+            max-width: 500px;
+            margin: 0 auto; 
+        }
+
+        h2 {
+            color: #4CAF50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            width: 100%;
+            padding: 12px;
+            background-color: #262626;
+            color: #f5f5dc;
+            border: 1px solid #555;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+
+        .search-bar:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        /* Filter Tabs */
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto; /* Lets you swipe through tabs if on a small phone */
+            padding-bottom: 5px;
+        }
+
+        .filter-btn {
+            background-color: #262626;
+            color: #f5f5dc;
+            border: 1px solid #555;
+            padding: 8px 15px;
+            border-radius: 20px; /* Makes them look like pills */
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .filter-btn.active {
+            background-color: #4CAF50;
+            color: #1a1a1a;
+            border-color: #4CAF50;
+            font-weight: bold;
+        }
+
+        /* Issue Cards */
+        .card {
+            background-color: #f5f5dc; /* Beige card */
+            border: 2px solid #4CAF50; /* Green border */
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex; /* Lines up image and text side-by-side */
+            gap: 15px;
+            color: #1a1a1a; /* Dark text for readability on beige */
+            text-decoration: none; /* If we make the whole card clickable later */
+        }
+
+        .card-img-placeholder {
+            width: 60px;
+            height: 60px;
+            background-color: #ccc;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .card-content {
+            flex-grow: 1;
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin: 0 0 5px 0;
+        }
+
+        .card-street {
+            font-size: 14px;
+            color: #555;
+            margin: 0 0 10px 0;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            font-size: 11px;
+            color: white;
+        }
+        .status-open { background-color: #f44336; } /* Red */
+        .status-progress { background-color: #ff9800; } /* Orange */
+        .status-resolved { background-color: #4CAF50; } /* Green */
+    </style>
+</head>
+<body>
+
+    <a href="/citizen" class="back-btn">&#8592; Home</a>
+
+    <div class="board-container">
+        <h2>Public Board</h2>
+
+        <input type="text" id="searchInput" class="search-bar" placeholder="Search by street or issue type...">
+
+        <div class="filter-group">
+            <button class="filter-btn active" onclick="filterReports('All')">All</button>
+            <button class="filter-btn" onclick="filterReports('Open')">Open</button>
+            <button class="filter-btn" onclick="filterReports('In Progress')">Fixing Now</button>
+            <button class="filter-btn" onclick="filterReports('Resolved')">Resolved</button>
+        </div>
+
+        <div id="ledger-list">
+            {% for report in reports %}
+            
+            <a href="/ticket/{{ report.id }}" class="card" data-status="{{ report.status }}" data-text="{{ report.type }} {{ report.street }}">
+                
+                <div class="card-img-placeholder">&#128247;</div>
+                
+                <div class="card-content">
+                    <p class="card-title">{{ report.type }}</p>
+                    <p class="card-street">&#128205; {{ report.street }}</p>
+                    
+                    <div class="card-footer">
+                        <span>ID: #{{ report.id }}</span>
+                        <span class="status-badge 
+                            {% if report.status == 'Open' %} status-open 
+                            {% elif report.status == 'In Progress' %} status-progress 
+                            {% else %} status-resolved {% endif %}">
+                            {{ report.status }}
+                        </span>
+                    </div>
+                    <div style="font-size: 10px; margin-top: 5px; text-align: right;">{{ report.date }}</div>
+                </div>
+            </a> {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        function filterReports(status) {
+            // Update active button color
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Hide/Show cards based on status
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                if (status === 'All' || card.getAttribute('data-status') === status) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Live Search Bar
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            const query = this.value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                const text = card.getAttribute('data-text').toLowerCase();
+                if (text.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
