@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyosBayan - Welcome</title>
+    <style>
+        /* This is the CSS for our Dark Mode theme */
+        body {
+            background-color: #1a1a1a; /* Deep charcoal background */
+            color: #f5f5dc; /* Beige text */
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Takes up the full height of the screen */
+            margin: 0;
+        }
+
+        .container {
+            text-align: center;
+            background-color: #262626; /* Slightly lighter dark gray box */
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 128, 0, 0.2); /* Subtle green glowing shadow */
+        }
+
+        h1 {
+            color: #4CAF50; /* Dark green logo color */
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+
+        /* Styling for the buttons */
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .btn-citizen {
+            background-color: #4CAF50; /* Solid green */
+            color: #f5f5dc; /* Beige text */
+            border: none;
+        }
+
+        .btn-admin {
+            background-color: #f5f5dc; /* Beige background */
+            color: #1a1a1a; /* Dark text for contrast */
+            border: 2px solid #4CAF50; /* Dark green outline */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>AyosBayan</h1>
+        <p>Welcome to AyosBayan. How would you like to proceed?</p>
+        
+        <a href="/citizen" class="btn btn-citizen">I am a Resident</a>
+        <a href="#" class="btn btn-admin">I am Barangay Staff</a>
+    </div>
+
+</body>
+</html>

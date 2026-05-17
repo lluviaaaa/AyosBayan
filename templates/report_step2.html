@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyosBayan - Step 2: Details</title>
+    <style>
+        body {
+            background-color: #1a1a1a; 
+            color: #f5f5dc; 
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            height: 100vh; 
+            margin: 0;
+            padding-top: 60px;
+            position: relative; 
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #f5f5dc; 
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid transparent;
+        }
+
+        .back-btn:hover {
+            border: 1px solid #4CAF50;
+            background-color: rgba(76, 175, 80, 0.1); 
+        }
+
+        .container {
+            background-color: #262626;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 128, 0, 0.2);
+            width: 350px; 
+            text-align: center;
+        }
+
+        h2 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .dropdown {
+            width: 100%;
+            padding: 12px;
+            background-color: #1a1a1a;
+            color: #f5f5dc;
+            border: 1px solid #555;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .dropdown:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        optgroup {
+            background-color: #262626;
+            color: #4CAF50; 
+            font-weight: bold;
+            font-style: normal;
+        }
+
+        option {
+            background-color: #1a1a1a;
+            color: #f5f5dc;
+            font-weight: normal;
+        }
+
+        .text-input, .text-area {
+            width: 100%;
+            padding: 12px;
+            background-color: #1a1a1a;
+            color: #f5f5dc;
+            border: 1px solid #555;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            font-family: Arial, sans-serif;
+        }
+
+        .text-input:focus, .text-area:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        .text-area {
+            resize: none; 
+            height: 80px;
+        }
+
+        .warning-text {
+            font-size: 12px;
+            color: #ff9800; 
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .btn-submit {
+            background-color: #4CAF50; 
+            color: #f5f5dc; 
+            border: none;
+            padding: 15px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-submit:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/report/step1" class="back-btn">&#8592; Back</a>
+
+    <div class="container">
+        <h2>Step 2 of 2: Details</h2>
+        
+        <form action="/report/success" method="GET">
+            
+            <select class="dropdown" required>
+                <option value="" disabled selected>Select Problem Type</option>
+                
+                <optgroup label="Roads & Infrastructure">
+                    <option value="pothole">Deep Pothole / Damaged Road</option>
+                    <option value="sidewalk">Damaged Sidewalk</option>
+                    <option value="streetlight">Broken Streetlight</option>
+                    <option value="wires">Dangling / Exposed Wires</option>
+                </optgroup>
+
+                <optgroup label="Sanitation & Environment">
+                    <option value="garbage">Uncollected Garbage / Illegal Dumping</option>
+                    <option value="drainage">Blocked Drainage / Canal</option>
+                    <option value="flooding">Flooding</option>
+                    <option value="tree">Fallen Tree / Branches</option>
+                    <option value="dead_animal">Dead Animal Removal</option>
+                </optgroup>
+
+                <optgroup label="Community Safety & Order">
+                    <option value="parking">Illegal Parking / Road Obstruction</option>
+                    <option value="stray">Stray Animals</option>
+                    <option value="noise">Severe Noise Complaint</option>
+                </optgroup>
+
+                <optgroup label="Other">
+                    <option value="other">Others (Please specify below)</option>
+                </optgroup>
+            </select>
+
+            <textarea class="text-area" placeholder="Add more details (optional)"></textarea>
+
+            <input type="tel" class="text-input" placeholder="Your Phone Number (Optional)">
+            
+            <div class="warning-text">
+                Note: Once submitted, this report is permanent and cannot be deleted by anyone.
+            </div>
+
+            <button type="submit" class="btn-submit">Submit Report</button>
+        
+        </form>
+    </div>
+
+</body>
+</html>

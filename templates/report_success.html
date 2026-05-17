@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyosBayan - Success</title>
+    <style>
+        body {
+            background-color: #1a1a1a; 
+            color: #f5f5dc; 
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; 
+            margin: 0;
+            text-align: center;
+        }
+
+        .container {
+            background-color: #262626;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 128, 0, 0.2);
+            width: 350px; 
+        }
+
+        .checkmark-circle {
+            background-color: #4CAF50;
+            color: #1a1a1a;
+            font-size: 50px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px auto; 
+        }
+
+        h2 {
+            color: #f5f5dc;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .ticket-box {
+            background-color: #1a1a1a;
+            border: 1px dashed #4CAF50;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-size: 18px;
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px; 
+        }
+
+        .btn {
+            flex: 1; 
+            padding: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .btn-view {
+            background-color: #4CAF50; 
+            color: #f5f5dc; 
+            border: none;
+        }
+
+        .btn-home {
+            background-color: transparent; 
+            color: #f5f5dc; 
+            border: 2px solid #555; 
+            transition: 0.3s;
+        }
+
+        .btn-home:hover {
+            border-color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="checkmark-circle">&#10004;</div>
+        
+        <h2>Report Submitted Successfully!</h2>
+        
+        <div class="ticket-box">
+            Your Ticket ID: #{{ ticket_id }}
+        </div>
+        
+        <p>Thank you for helping the community. Your report is now permanently recorded on the public ledger.</p>
+        
+        <div class="button-group">
+            <a href="#" class="btn btn-view">View My Report</a>
+            <a href="/citizen" class="btn btn-home">Return Home</a> 
+        </div>
+    </div>
+
+</body>
+</html>

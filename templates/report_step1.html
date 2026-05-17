@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyosBayan - Step 1: The Problem</title>
+    <style>
+        body {
+            background-color: #1a1a1a; 
+            color: #f5f5dc; 
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            height: 100vh; 
+            margin: 0;
+            padding-top: 60px;
+            position: relative; 
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #f5f5dc; 
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid transparent;
+        }
+
+        .back-btn:hover {
+            border: 1px solid #4CAF50;
+            background-color: rgba(76, 175, 80, 0.1); 
+        }
+
+        .container {
+            background-color: #262626;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 128, 0, 0.2);
+            width: 350px; 
+            text-align: center;
+        }
+
+        h2 {
+            color: #4CAF50;
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .photo-upload {
+            display: block;
+            background-color: #f5f5dc; 
+            color: #1a1a1a; 
+            border: 2px dashed #4CAF50; 
+            padding: 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-weight: bold;
+            transition: 0.3s;
+            text-align: center;
+        }
+
+        .photo-upload:hover {
+            background-color: #e3e3c6; 
+        }
+
+        .add-more-text {
+            display: block;
+            margin-top: 10px;
+            color: #4CAF50;
+            font-size: 14px;
+        }
+
+        #preview-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+        }
+
+        .preview-media {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 2px solid #4CAF50;
+        }
+
+        input[type="file"] {
+            display: none; 
+        }
+
+        .location-btn {
+            background-color: #333;
+            color: #f5f5dc;
+            border: 1px solid #4CAF50;
+            padding: 12px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 12px;
+            background-color: #1a1a1a;
+            color: #f5f5dc;
+            border: 1px solid #555;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 25px;
+        }
+
+        .text-input:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        .btn-next {
+            background-color: #4CAF50; 
+            color: #f5f5dc; 
+            border: none;
+            padding: 15px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/citizen" class="back-btn">&#8592; Back</a>
+
+    <div class="container">
+        <h2>Step 1 of 2: The Evidence</h2>
+        
+        <form action="/report/step2" method="GET">
+            
+            <label class="photo-upload" id="upload-box">
+                <span id="upload-text">&#128247; Tap to Upload Photos/Videos (Max 50MB)</span>
+                <div id="preview-gallery"></div>
+                <input type="file" id="file-input" accept="image/*,video/*" multiple required>
+            </label>
+
+            <button type="button" class="location-btn" id="get-location-btn">&#128205; Use My Current Location</button>
+            <input type="text" class="text-input" id="location-input" placeholder="Or type the exact street/landmark" required>
+
+            <button type="submit" class="btn-next">Next</button>
+        
+        </form>
+    </div>
+
+    <script>
+        // --- PART 1: FILE UPLOAD LOGIC ---
+        const fileInput = document.getElementById('file-input');
+        const previewGallery = document.getElementById('preview-gallery');
+        const uploadText = document.getElementById('upload-text');
+        const uploadBox = document.getElementById('upload-box');
+
+        const MAX_FILE_SIZE = 50 * 1024 * 1024; 
+        const dataTransfer = new DataTransfer(); 
+
+        fileInput.addEventListener('change', function(event) {
+            const newFiles = event.target.files;
+
+            for (let i = 0; i < newFiles.length; i++) {
+                const file = newFiles[i];
+
+                if (file.size > MAX_FILE_SIZE) {
+                    alert(`The file "${file.name}" is too large. Please keep files under 50MB.`);
+                    continue; 
+                }
+
+                dataTransfer.items.add(file);
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    let mediaElement;
+                    if (file.type.startsWith('image/')) {
+                        mediaElement = document.createElement('img');
+                        mediaElement.src = e.target.result;
+                    } else if (file.type.startsWith('video/')) {
+                        mediaElement = document.createElement('video');
+                        mediaElement.src = e.target.result;
+                        mediaElement.controls = false; 
+                    }
+
+                    if (mediaElement) {
+                        mediaElement.className = 'preview-media';
+                        previewGallery.appendChild(mediaElement);
+                    }
+                }
+                reader.readAsDataURL(file);
+            }
+
+            fileInput.files = dataTransfer.files;
+
+            if (dataTransfer.files.length > 0) {
+                uploadText.innerHTML = `&#9989; ${dataTransfer.files.length} file(s) ready. <br><span class="add-more-text">+ Tap here to add more</span>`;
+                uploadBox.style.backgroundColor = '#e3e3c6';
+            }
+        });
+
+        // --- PART 2: GPS LOCATION LOGIC ---
+        const locationBtn = document.getElementById('get-location-btn');
+        const locationInput = document.getElementById('location-input');
+
+        locationBtn.addEventListener('click', function() {
+            // Check if the browser supports GPS
+            if (navigator.geolocation) {
+                // Change button text so the user knows it's thinking
+                locationBtn.innerHTML = '&#8987; Locating...'; 
+                
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        // Success! We got the coordinates
+                        const lat = position.coords.latitude;
+                        const lng = position.coords.longitude;
+
+                        // Send the coordinates to OpenStreetMap to get a real address
+                        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.display_name) {
+                                    // Put the real address in the text box
+                                    locationInput.value = data.display_name;
+                                    locationBtn.innerHTML = '&#9989; Location Found!';
+                                    locationBtn.style.backgroundColor = '#4CAF50';
+                                } else {
+                                    // Fallback just in case the address isn't found
+                                    locationInput.value = `Lat: ${lat}, Lng: ${lng}`;
+                                    locationBtn.innerHTML = '&#9989; Coordinates Found!';
+                                }
+                            })
+                            .catch(error => {
+                                // If the map API is down, just use the raw coordinates
+                                locationInput.value = `Lat: ${lat}, Lng: ${lng}`;
+                                locationBtn.innerHTML = '&#9989; Coordinates Found!';
+                            });
+                    },
+                    function(error) {
+                        // If the user clicks "Block" on the location popup
+                        alert("Could not find your location. Please ensure location permissions are enabled, or type it manually.");
+                        locationBtn.innerHTML = '&#128205; Use My Current Location';
+                    }
+                );
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        });
+    </script>
+
+</body>
+</html>
