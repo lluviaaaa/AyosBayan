@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyosBayan - Resolved Records</title>
+    <style>
+        /* --- GLOBAL STYLES --- */
+        body {
+            background-color: #1a1c1e; 
+            color: #f5f5dc; 
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex; 
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR NAV --- */
+        .sidebar {
+            width: 240px;
+            background-color: #162b1b; 
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            border-right: 1px solid #2d3d2d;
+        }
+
+        .sidebar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e6c883; /* Gold title */
+            margin-bottom: 40px;
+        }
+
+        .nav-link {
+            color: #a3b899;
+            text-decoration: none;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            font-size: 15px;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link.active {
+            color: #4CAF50;
+            font-weight: bold;
+            border-left: 4px solid #4CAF50;
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .logout-btn {
+            margin-top: auto; 
+            color: #e6c883;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            flex-grow: 1; 
+            padding: 40px;
+            background-color: #1a1c1e;
+            overflow-y: auto; 
+            box-sizing: border-box;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        h1 {
+            color: #e6c883; /* Gold Header */
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        /* --- FILTER BAR --- */
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .filter-input {
+            background-color: #222528;
+            border: 1px solid #4CAF50;
+            color: #f5f5dc;
+            padding: 12px 15px;
+            border-radius: 6px;
+            flex-grow: 1;
+        }
+
+        .filter-select {
+            background-color: #222528;
+            border: 1px solid #4CAF50;
+            color: #a3a3a3;
+            padding: 12px 15px;
+            border-radius: 6px;
+            width: 200px;
+        }
+
+        /* --- TABLE STYLES --- */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #2d3d2d;
+        }
+
+        th {
+            color: #e6c883;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        td {
+            font-size: 14px;
+            color: #d1d1d1;
+        }
+
+        .status-badge {
+            background-color: #00c853;
+            color: #121212;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+            display: inline-block;
+        }
+
+        .btn-view {
+            background-color: transparent;
+            border: 1px solid #e6c883;
+            color: #e6c883;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .btn-view:hover {
+            background-color: #e6c883;
+            color: #121212;
+        }
+
+        /* --- RECORD DETAILS PANEL --- */
+        .details-panel {
+            background-color: #1e2124;
+            border: 1px solid #4CAF50;
+            border-radius: 8px;
+            padding: 25px;
+            display: flex;
+            gap: 40px;
+        }
+
+        .details-left {
+            flex: 1;
+        }
+
+        .details-right {
+            flex: 1;
+            border-left: 1px solid #2d3d2d;
+            padding-left: 40px;
+        }
+
+        .panel-title {
+            color: #e6c883;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .photo-grid {
+            display: flex;
+            gap: 15px;
+        }
+
+        .photo-box {
+            text-align: center;
+            font-size: 12px;
+            color: #e6c883;
+        }
+
+        .photo-placeholder {
+            width: 180px;
+            height: 120px;
+            background-color: #333;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            object-fit: cover;
+        }
+
+        /* --- TIMELINE --- */
+        .timeline {
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 5px;
+            bottom: 5px;
+            width: 2px;
+            background-color: #4CAF50;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 25px;
+            font-size: 13px;
+            color: #d1d1d1;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -25px;
+            top: 2px;
+            width: 10px;
+            height: 10px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-brand">AyosBayan</div>
+        
+        <a href="/admin/dashboard" class="nav-link">Dashboard</a>
+        <a href="/board" class="nav-link">Active Ledger</a>
+        <a href="/admin/resolved" class="nav-link active">Resolved Records</a>
+        <a href="/admin/settings" class="nav-link">Settings</a>
+        
+        <a href="/" class="nav-link logout-btn" style="margin-top: auto;">&#x23FB; Log Out</a> 
+    </div>
+
+    <div class="main-content">
+        <h1>Resolved Records Archive</h1>
+
+        <div class="filter-bar">
+            <input type="text" class="filter-input" placeholder="&#128269; Search by Ticket ID or Street">
+            <select class="filter-select">
+                <option>Month/Year</option>
+            </select>
+            <select class="filter-select">
+                <option>Category (e.g. Pothole, Streetlight)</option>
+            </select>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Ticket ID</th>
+                    <th>Date Submitted</th>
+                    <th>Date Resolved</th>
+                    <th>Location</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                <tr>
+                    <td>{{ report.id }}</td>
+                    <td>{{ report.date_reported }}</td>
+                    <td>{{ report.date_reported }}</td> <td>{{ report.street }}</td>
+                    <td><span class="status-badge">Resolved</span></td>
+                    <td><button class="btn-view">View Record</button></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" style="text-align: center;">No resolved records found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="details-panel">
+            <div class="details-left">
+                <h3 class="panel-title">RECORD DETAILS: #AB-0102</h3>
+                <p style="font-size: 14px; margin-bottom: 15px;">Side-by-Side Photos</p>
+                <div class="photo-grid">
+                    <div class="photo-box">
+                        <div class="photo-placeholder" style="background-image: url('https://via.placeholder.com/180x120/4CAF50/ffffff?text=Pothole+Original');"></div>
+                        RESIDENT ORIGINAL
+                    </div>
+                    <div class="photo-box">
+                        <div class="photo-placeholder" style="background-image: url('https://via.placeholder.com/180x120/1a1c1e/e6c883?text=Fixed+Road'); border: 1px solid #4CAF50;"></div>
+                        ADMIN PROOF OF REPAIR
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-right">
+                <h3 class="panel-title">The Complete Timeline</h3>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <strong>[03/3/2022 08:00 AM]</strong> - Ticket Created & Submitted by Resident.
+                    </div>
+                    <div class="timeline-item">
+                        <strong>[03/3/2022 09:30 AM]</strong> - Marked In Progress by Admin.
+                    </div>
+                    <div class="timeline-item">
+                        <strong>[03/3/2022 04:00 PM]</strong> - Resolved by Admin with proof.<br>
+                        <span style="color: #888; font-size: 11px;">Add timestamp for each step.</span>
+                    </div>
+                    <div class="timeline-item" style="color: #e6c883;">
+                        <strong>Full, Locked Ledger History:</strong><br>
+                        <span style="color: #888;">This record cannot be edited or deleted.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
