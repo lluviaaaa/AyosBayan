@@ -133,17 +133,17 @@ def admin_login():
 # Route for Admin Screen 2: Main Dashboard
 @app.route('/admin/dashboard')
 def admin_dashboard():
-    # 1. Grab EVERY ticket from the database
+    # 1. Grab EVERY single ticket from the database
     all_tickets = Ticket.query.all()
 
-    # 2. Count the tickets for our top metric cards
+    # 2. Count the tickets so we can update the colorful metric cards at the top
     open_count = Ticket.query.filter_by(status='Open').count()
     progress_count = Ticket.query.filter_by(status='In Progress').count()
     resolved_count = Ticket.query.filter_by(status='Resolved').count()
 
-    # 3. Send the tickets and the math to the HTML dashboard
+    # 3. Send all this real data over to the HTML file
     return render_template(
-        'admin_dashboard.html', 
+        'admin_dashboard.html', # Make sure this matches your exact filename!
         reports=all_tickets,
         open_count=open_count,
         progress_count=progress_count,
@@ -160,6 +160,16 @@ def update_ticket(ticket_id):
     # In the future, this is where we will tell MySQL to save the new status!
     # For now, we will just send the admin back to the dashboard.
     return redirect('/admin/dashboard')
+
+@app.route('/admin/resolved')
+def admin_resolved():
+    # Only grab tickets where the status is 'Resolved'
+    resolved_tickets = Ticket.query.filter_by(status='Resolved').all()
+    return render_template('admin_resolved.html', reports=resolved_tickets)
+
+@app.route('/admin/settings')
+def admin_settings():
+    return render_template('admin_settings.html')
 
 
 if __name__ == '__main__':

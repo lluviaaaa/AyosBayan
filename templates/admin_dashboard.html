@@ -5,6 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AyosBayan - Admin Dashboard</title>
     <style>
+        /* 1. Create the animation rule */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 2. Apply it to your main boxes */
+        .container, .main-content {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+        
         body {
             background-color: #121212; 
             color: #f5f5dc; 
@@ -286,7 +303,7 @@
                     <div class="alert-thumbnail">📷</div>
                     <div class="alert-info">
                         <div class="alert-location">Location: {{ report.street }}, Barangay 142</div>
-                        <div class="alert-type">{{ report.type }}</div>
+                        <div class="alert-type">{{ report.issue_type }}</div>
                     </div>
                     <a href="/ticket/{{ report.id }}" class="view-link">View</a>
                 </div>
