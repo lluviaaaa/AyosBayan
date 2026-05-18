@@ -153,6 +153,12 @@
         <form action="/submit_report" method="POST">
             
             <input type="hidden" name="street" value="{{ street }}">
+            <input type="hidden" name="image_filename" value="{{ image_filename or '' }}">
+            {% if image_url %}
+            <div style="margin-bottom: 20px;">
+                <img src="{{ image_url }}" alt="Selected Issue Photo" style="width:100%; border-radius: 8px; border: 2px solid #4CAF50; object-fit: cover;">
+            </div>
+            {% endif %}
             
             <select class="dropdown" name="issue_type" required>
                 <option value="" disabled selected>Select Problem Type</option>

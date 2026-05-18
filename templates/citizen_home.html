@@ -74,11 +74,21 @@
             font-size: 16px;
         }
 
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
         .btn {
-            display: block;
-            width: 100%;
-            padding: 15px;
-            margin: 10px 0;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            min-width: 180px;
+            padding: 15px 20px;
+            margin: 0;
             font-size: 16px;
             font-weight: bold;
             border-radius: 5px;
@@ -114,8 +124,10 @@
         <h1>AyosBayan</h1>
         <p>Help keep our barangay safe and clean.</p>
         
-        <a href="/report/step1" class="btn btn-report">Report an Issue</a>
-        <a href="/board" class="btn btn-board">View Public Board</a>
+        <div class="button-group">
+            <a href="/report/step1" class="btn btn-report">Report an Issue</a>
+            <a href="/board" class="btn btn-board">View Public Board</a>
+        </div>
     </div>
 
     <div class="footer">

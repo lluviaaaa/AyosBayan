@@ -160,12 +160,12 @@
     <div class="container">
         <h2>Step 1 of 2: The Evidence</h2>
         
-        <form action="/report/step2" method="GET">
+        <form action="/report/step2" method="POST" enctype="multipart/form-data">
             
             <label class="photo-upload" id="upload-box">
                 <span id="upload-text">&#128247; Tap to Upload Photos/Videos (Max 50MB)</span>
                 <div id="preview-gallery"></div>
-                <input type="file" id="file-input" accept="image/*,video/*" multiple required>
+                <input type="file" id="file-input" name="issue_photo" accept="image/*,video/*" multiple required>
             </label>
 
             <button type="button" class="location-btn" id="get-location-btn">&#128205; Use My Current Location</button>

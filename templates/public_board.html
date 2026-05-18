@@ -173,38 +173,25 @@
     <div class="board-container">
         <h2>Public Board</h2>
 
-        <input type="text" id="searchInput" class="search-bar" placeholder="Search by street or issue type...">
+        <input type="text" id="search-input" placeholder="tree">
 
-        <div class="filter-group">
-            <button class="filter-btn active" onclick="filterReports('All')">All</button>
-            <button class="filter-btn" onclick="filterReports('Open')">Open</button>
-            <button class="filter-btn" onclick="filterReports('In Progress')">Fixing Now</button>
-            <button class="filter-btn" onclick="filterReports('Resolved')">Resolved</button>
-        </div>
+            <div class="filter-group">
+                <button class="filter-btn active" data-filter="All">All</button>
+                <button class="filter-btn" data-filter="Open">Open</button>
+                <button class="filter-btn" data-filter="In Progress">Fixing Now</button> 
+                <button class="filter-btn" data-filter="Resolved">Resolved</button>
+            </div>
 
         <div id="ledger-list">
             {% for report in reports %}
-            
-            <a href="/ticket/{{ report.id }}" class="card" data-status="{{ report.status }}" data-text="{{ report.type }} {{ report.street }}">
-                
-                <div class="card-img-placeholder">&#128247;</div>
-                
-                <div class="card-content">
-                    <p class="card-title">{{ report.type }}</p>
-                    <p class="card-street">&#128205; {{ report.street }}</p>
-                    
-                    <div class="card-footer">
-                        <span>ID: #{{ report.id }}</span>
-                        <span class="status-badge 
-                            {% if report.status == 'Open' %} status-open 
-                            {% elif report.status == 'In Progress' %} status-progress 
-                            {% else %} status-resolved {% endif %}">
-                            {{ report.status }}
-                        </span>
-                    </div>
-                    <div style="font-size: 10px; margin-top: 5px; text-align: right;">{{ report.date }}</div>
+                <div class="board-item" data-status="{{ report.status }}" style="background-color: #262626; padding: 15px; margin-bottom: 10px; border-radius: 5px; border-left: 4px solid #4CAF50;">
+                    <h4 class="ticket-text" style="margin: 0; color: #f5f5dc;">{{ report.issue_type }} - {{ report.id }}</h4>
+                    <p class="ticket-text" style="margin: 5px 0; color: #a3a3a3; font-size: 14px;">📍 {{ report.street }}</p>
+                    <p class="ticket-text" style="margin: 5px 0; color: #d1d1d1; font-size: 14px;">{{ report.description }}</p>
+                    <span style="background-color: #333; color: #4CAF50; padding: 3px 8px; border-radius: 3px; font-size: 12px; font-weight: bold;">{{ report.status }}</span>
+                    <span style="color: #888; font-size: 12px; margin-left: 10px;">Reported: {{ report.date_reported }}</span>
                 </div>
-            </a> {% endfor %}
+            {% endfor %}
         </div>
     </div>
 
@@ -241,6 +228,63 @@
             });
         });
     </script>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('search-input');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const tickets = document.querySelectorAll('.board-item');
+
+        let currentSearch = '';
+        let currentFilter = 'All';
+
+        // The main filtering function
+        function filterTickets() {
+            tickets.forEach(ticket => {
+                // Grab all the text inside the ticket (title, description, street)
+                const textContent = ticket.innerText.toLowerCase();
+                const status = ticket.getAttribute('data-status');
+
+                // Check if it matches our rules
+                const matchesSearch = textContent.includes(currentSearch);
+                const matchesFilter = (currentFilter === 'All') || (status === currentFilter);
+
+                // Show or hide instantly!
+                if (matchesSearch && matchesFilter) {
+                    ticket.style.display = 'block'; 
+                } else {
+                    ticket.style.display = 'none';
+                }
+            });
+        }
+
+        // 1. Listen for typing in the search bar
+        if(searchInput) {
+            searchInput.addEventListener('input', function(e) {
+                currentSearch = e.target.value.toLowerCase();
+                filterTickets();
+            });
+        }
+
+        // 2. Listen for clicks on the filter buttons
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // Remove the green highlight from all buttons
+                filterBtns.forEach(b => {
+                    b.classList.remove('active');
+                    b.style.backgroundColor = 'transparent'; // Reset to dark
+                });
+                
+                // Add the green highlight to the clicked button
+                this.classList.add('active');
+                this.style.backgroundColor = '#00c853'; // Make it green!
+                
+                currentFilter = this.getAttribute('data-filter');
+                filterTickets();
+            });
+        });
+    });
+</script>
 
 </body>
 </html>
