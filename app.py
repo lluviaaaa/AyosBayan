@@ -13,8 +13,6 @@ os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # --- DATABASE CONNECTION SETTINGS ---
 
-# We tell Flask exactly where to find the database and how to log in.
-# Format: database_type+connector://username:password@server_address/database_name
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:Mysqlr00tp%40ssw0rd828@localhost/ayosbayan'
 
 # We turn off an automatic tracking feature we don't need, which keeps our app running fast and prevents warning messages.
@@ -242,4 +240,4 @@ def admin_settings():
     return render_template('admin_settings.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
