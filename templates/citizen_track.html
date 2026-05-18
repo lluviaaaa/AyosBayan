@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyosBayan - Track Report</title>
+    <style>
+        body {
+            background-color: #1a1c1e; 
+            color: #f5f5dc; 
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .back-btn {
+            align-self: flex-start;
+            color: #f5f5dc; 
+            text-decoration: none;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            border: 1px solid transparent;
+            margin-bottom: 20px;
+        }
+
+        .back-btn:hover {
+            border: 1px solid #4CAF50;
+            background-color: rgba(76, 175, 80, 0.1); 
+        }
+
+        .ticket-card {
+            background-color: #222528;
+            border: 1px solid #4CAF50;
+            border-radius: 10px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+            animation: fadeInUp 0.5s ease-out forwards;
+        }
+
+        h2 { color: #4CAF50; margin-top: 0; text-align: center; }
+        .label { color: #a3a3a3; font-size: 12px; text-transform: uppercase; margin-top: 20px; margin-bottom: 5px;}
+        .value { color: #f5f5dc; font-size: 16px; font-weight: bold; margin: 0; }
+        
+        .status-badge {
+            display: inline-block;
+            background-color: #162b1b;
+            color: #4CAF50;
+            padding: 6px 12px;
+            border-radius: 5px;
+            border: 1px solid #4CAF50;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="/citizen" class="back-btn">&#8592; Back to Home</a>
+
+    <div class="ticket-card">
+        <h2>Report Details</h2>
+        <p style="text-align: center; color: #e6c883; font-weight: bold; font-size: 20px; margin-bottom: 30px;">#{{ report.id }}</p>
+
+        <div class="label">Current Status</div>
+        <div class="status-badge">{{ report.status }}</div>
+
+        <div class="label">Date Reported</div>
+        <p class="value">{{ report.date_reported }}</p>
+
+        <div class="label">Issue Type</div>
+        <p class="value">{{ report.issue_type }}</p>
+
+        <div class="label">Location</div>
+        <p class="value">{{ report.street }}</p>
+
+        <div class="label">Description</div>
+        <p class="value" style="font-weight: normal; line-height: 1.5;">{{ report.description }}</p>
+    </div>
+
+</body>
+</html>

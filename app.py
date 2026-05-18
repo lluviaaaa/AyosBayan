@@ -226,6 +226,17 @@ def resolve_ticket(ticket_id):
     # 3. Reload the dashboard so the numbers update instantly
     return redirect('/admin/dashboard')
 
+@app.route('/track/<ticket_id>')
+def track_ticket(ticket_id):
+    # Find the ticket in the database
+    ticket = Ticket.query.get(ticket_id)
+    
+    # Send it to a safe, read-only HTML page
+    if ticket:
+        return render_template('citizen_track.html', report=ticket)
+    else:
+        return "Ticket not found!", 404
+
 @app.route('/admin/settings')
 def admin_settings():
     return render_template('admin_settings.html')
