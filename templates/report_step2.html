@@ -133,9 +133,11 @@
     <div class="container">
         <h2>Step 2 of 2: Details</h2>
         
-        <form action="/report/success" method="GET">
+        <form action="/submit_report" method="POST">
             
-            <select class="dropdown" required>
+            <input type="hidden" name="street" value="{{ street }}">
+            
+            <select class="dropdown" name="issue_type" required>
                 <option value="" disabled selected>Select Problem Type</option>
                 
                 <optgroup label="Roads & Infrastructure">
@@ -164,7 +166,7 @@
                 </optgroup>
             </select>
 
-            <textarea class="text-area" placeholder="Add more details (optional)"></textarea>
+            <textarea class="text-area" name="description" placeholder="Add more details (optional)"></textarea>
 
             <input type="tel" class="text-input" placeholder="Your Phone Number (Optional)">
             
