@@ -205,10 +205,6 @@ def admin_resolved():
     resolved_tickets = Ticket.query.filter_by(status='Resolved').all()
     return render_template('admin_resolved.html', reports=resolved_tickets)
 
-@app.route('/admin/settings')
-def admin_settings():
-    return render_template('admin_settings.html')
-
 @app.route('/admin/resolve/<ticket_id>', methods=['POST'])
 def resolve_ticket(ticket_id):
     # 1. Find the exact ticket in the database

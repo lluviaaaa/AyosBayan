@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyosBayan - Settings</title>
+    <style>
+        /* --- GLOBAL STYLES --- */
+        body {
+            background-color: #1a1c1e; 
+            color: #f5f5dc; 
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex; 
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR NAV --- */
+        .sidebar {
+            width: 240px;
+            background-color: #162b1b; 
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            border-right: 1px solid #2d3d2d;
+        }
+
+        .sidebar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e6c883; 
+            margin-bottom: 40px;
+        }
+
+        .nav-link {
+            color: #a3b899;
+            text-decoration: none;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            font-size: 15px;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link.active {
+            color: #4CAF50;
+            font-weight: bold;
+            border-left: 4px solid #4CAF50;
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .logout-btn {
+            margin-top: auto; 
+            color: #e6c883;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            flex-grow: 1; 
+            padding: 40px;
+            background-color: #1a1c1e;
+            overflow-y: auto; 
+            box-sizing: border-box;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        h1 {
+            color: #e6c883; 
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        /* --- SETTINGS CARDS --- */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .settings-card {
+            background-color: #222528;
+            border: 1px solid #2d3d2d;
+            border-radius: 8px;
+            padding: 25px;
+        }
+
+        .card-title {
+            color: #e6c883;
+            font-size: 18px;
+            margin-top: 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        /* --- FORMS & INPUTS --- */
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            color: #a3a3a3;
+            margin-bottom: 8px;
+        }
+
+        .text-input {
+            width: 100%;
+            background-color: #1a1c1e;
+            border: 1px solid #4CAF50;
+            color: #f5f5dc;
+            padding: 12px;
+            border-radius: 6px;
+            box-sizing: border-box;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #e6c883;
+        }
+
+        /* --- TOGGLE SWITCHES --- */
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .toggle-label {
+            font-size: 14px;
+            color: #d1d1d1;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 46px;
+            height: 24px;
+        }
+
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: #444;
+            transition: .4s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: #f5f5dc;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #4CAF50;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        /* --- SAVE BUTTON --- */
+        .save-btn {
+            background-color: #4CAF50;
+            color: #121212;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+            float: right;
+            transition: 0.3s;
+        }
+
+        .save-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Animation */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-brand">AyosBayan</div>
+        
+        <a href="/admin/dashboard" class="nav-link">Dashboard</a>
+        <a href="/board" class="nav-link">Active Ledger</a>
+        <a href="/admin/resolved" class="nav-link">Resolved Records</a>
+        <a href="/admin/settings" class="nav-link active">Settings</a>
+        
+        <a href="/" class="nav-link logout-btn" style="margin-top: auto;">&#x23FB; Log Out</a> 
+    </div>
+
+    <div class="main-content">
+        <h1>System Settings</h1>
+
+        <div class="settings-grid">
+            
+            <div class="settings-card">
+                <h3 class="card-title">Admin Profile</h3>
+                
+                <div class="input-group">
+                    <label>Barangay Assigned</label>
+                    <input type="text" class="text-input" value="Barangay 142, San Isidro" readonly style="opacity: 0.7;">
+                </div>
+
+                <div class="input-group">
+                    <label>Admin Username</label>
+                    <input type="text" class="text-input" value="admin_main">
+                </div>
+
+                <div class="input-group">
+                    <label>Update Password</label>
+                    <input type="password" class="text-input" placeholder="Enter new password">
+                </div>
+            </div>
+
+            <div class="settings-card">
+                <h3 class="card-title">Notification & System Rules</h3>
+                
+                <div class="toggle-row">
+                    <span class="toggle-label">Email alerts for new reports</span>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="toggle-row">
+                    <span class="toggle-label">SMS alerts for critical keywords (e.g. "Fire")</span>
+                    <label class="switch">
+                        <input type="checkbox">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="toggle-row">
+                    <span class="toggle-label">Auto-hide resolved tickets from Public Ledger</span>
+                    <label class="switch">
+                        <input type="checkbox" checked>
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <div class="input-group" style="margin-top: 25px;">
+                    <label>Data Retention Policy (Months)</label>
+                    <select class="text-input">
+                        <option>12 Months</option>
+                        <option>24 Months</option>
+                        <option>Keep Forever</option>
+                    </select>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="save-btn" onclick="alert('Settings successfully updated and saved to the server!')">Save Changes</button>
+
+    </div>
+
+</body>
+</html>
