@@ -34,11 +34,14 @@
         /* --- SIDEBAR NAV --- */
         .sidebar {
             width: 240px;
-            background-color: #143d22; /* Dark green sidebar matching the image */
+            min-width: 240px; /* <--- ADD THIS: Forces minimum width */
+            flex-shrink: 0;   /* <--- ADD THIS: Tells the browser never to squish it */
+            background-color: #143d22; 
             padding: 25px 20px;
             display: flex;
             flex-direction: column;
             box-sizing: border-box;
+            border-right: none;
         }
 
         .sidebar-brand {
@@ -268,7 +271,7 @@
             ▲ yosBayan
         </div>
         <a href="/admin/dashboard" class="nav-link">⊞ Dashboard</a>
-        <a href="/board" class="nav-link">🗎 Active Ledger</a>
+        <a href="/admin/board" class="nav-link">🗎 Active Ledger</a>
         <a href="/admin/resolved" class="nav-link">✓ Resolved Records</a>
         <a href="/admin/settings" class="nav-link">⚙ Settings</a>
         

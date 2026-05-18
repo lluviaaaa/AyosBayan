@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AyosBayan - Public Board</title>
+    <style>
+        /* --- GLOBAL & ANIMATION --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        body {
+            background-color: #1a1c1e; 
+            color: #f5f5dc; 
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex; /* Sidebar layout */
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR NAV (Original Cool Design) --- */
+        .sidebar {
+            width: 240px;
+            min-width: 240px; /* <--- ADD THIS: Forces minimum width */
+            flex-shrink: 0;   /* <--- ADD THIS: Tells the browser never to squish it */
+            background-color: #143d22; 
+            padding: 25px 20px;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            border-right: none;
+        }
+
+        .sidebar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: #f5f5dc;
+            margin-bottom: 40px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-link {
+            color: #a3b899;
+            text-decoration: none;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: 0.3s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #f5f5dc;
+            font-weight: bold;
+            border-left: none;
+        }
+
+        .logout-btn {
+            margin-top: auto; 
+            background-color: #00c853; 
+            color: #121212;
+            text-align: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .logout-btn:hover {
+            background-color: #00a543;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main-content {
+            flex-grow: 1; 
+            padding: 40px;
+            background-color: #1a1c1e;
+            overflow-y: auto; 
+            box-sizing: border-box;
+            animation: fadeInUp 0.5s ease-out;
+        }
+
+        h1 {
+            color: #e6c883; 
+            margin-top: 0;
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        /* --- SEARCH & FILTERS --- */
+        #search-input {
+            width: 100%;
+            max-width: 600px;
+            padding: 12px 15px;
+            background-color: #222528;
+            color: #f5f5dc;
+            border: 1px solid #4CAF50;
+            border-radius: 6px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        #search-input:focus {
+            outline: none;
+            border-color: #e6c883;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            background-color: #222528;
+            color: #a3a3a3;
+            border: 1px solid #2d3d2d;
+            padding: 8px 18px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .filter-btn.active {
+            background-color: #4CAF50;
+            color: #121212;
+            border-color: #4CAF50;
+            font-weight: bold;
+        }
+
+        /* --- TICKET CARDS --- */
+        .board-item {
+            background-color: #222528;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #4CAF50;
+            max-width: 800px;
+        }
+
+        .board-item h4 {
+            margin: 0 0 8px 0; 
+            color: #e6c883; 
+            font-size: 18px;
+        }
+
+        .board-item p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-brand">
+            ▲ yosBayan
+        </div>
+        
+        <a href="/admin/dashboard" class="nav-link">⊞ Dashboard</a>
+        <a href="/admin/board" class="nav-link">🗎 Active Ledger</a>
+        <a href="/admin/resolved" class="nav-link">✓ Resolved Records</a>
+        <a href="/admin/settings" class="nav-link">⚙ Settings</a>
+        
+        <a href="/" class="nav-link logout-btn">Log Out</a> 
+    </div>
+
+    <div class="main-content">
+        <h2>Public Active Ledger</h2>
+
+        <input type="text" id="search-input" placeholder="&#128269; Search by street, issue, or ticket ID...">
+
+        <div class="filter-group">
+            <button class="filter-btn active" data-filter="All">All</button>
+            <button class="filter-btn" data-filter="Open">Open</button>
+            <button class="filter-btn" data-filter="In Progress">Fixing Now</button> 
+            <button class="filter-btn" data-filter="Resolved">Resolved</button>
+        </div>
+
+        <div id="ledger-list">
+            {% for report in reports %}
+                <div class="board-item" data-status="{{ report.status }}">
+                    <h4>{{ report.issue_type }} - {{ report.id }}</h4>
+                    <p style="color: #a3a3a3;">📍 {{ report.street }}</p>
+                    <p style="color: #d1d1d1; margin-bottom: 15px;">{{ report.description }}</p>
+                    
+                    <span style="background-color: #162b1b; color: #4CAF50; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: bold; border: 1px solid #4CAF50;">{{ report.status }}</span>
+                    <span style="color: #888; font-size: 12px; margin-left: 15px;">Reported: {{ report.date_reported }}</span>
+                </div>
+            {% else %}
+                <p style="color: #888;">No active reports in the ledger right now.</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('search-input');
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            const tickets = document.querySelectorAll('.board-item');
+
+            let currentSearch = '';
+            let currentFilter = 'All';
+
+            function filterTickets() {
+                tickets.forEach(ticket => {
+                    const textContent = ticket.innerText.toLowerCase();
+                    const status = ticket.getAttribute('data-status');
+
+                    const matchesSearch = textContent.includes(currentSearch);
+                    const matchesFilter = (currentFilter === 'All') || (status === currentFilter);
+
+                    if (matchesSearch && matchesFilter) {
+                        ticket.style.display = 'block'; 
+                    } else {
+                        ticket.style.display = 'none';
+                    }
+                });
+            }
+
+            if(searchInput) {
+                searchInput.addEventListener('input', function(e) {
+                    currentSearch = e.target.value.toLowerCase();
+                    filterTickets();
+                });
+            }
+
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => {
+                        b.classList.remove('active');
+                        b.style.backgroundColor = '#222528'; 
+                        b.style.color = '#a3a3a3';
+                    });
+                    
+                    this.classList.add('active');
+                    this.style.backgroundColor = '#4CAF50'; 
+                    this.style.color = '#121212';
+                    
+                    currentFilter = this.getAttribute('data-filter');
+                    filterTickets();
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

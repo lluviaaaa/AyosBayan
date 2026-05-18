@@ -122,23 +122,31 @@ def submit_report():
     db.session.commit()
 
     # 5. Send them to the success page (you can adjust this URL to match yours)
-    return redirect('/report/success')
+    # 5. Send them to the success page AND pass the ID!
+    return redirect(f'/report/success?ticket_id={new_id}')
 
 
 @app.route('/report/success')
 def report_success():
-    # Make sure 'report_success.html' matches the actual name of your success HTML file! 
-    # (It might be just 'success.html' in your templates folder)
-    return render_template('report_success.html')
+    # Catch the ID from the URL
+    passed_id = request.args.get('ticket_id')
+    
+    # Hand it to the HTML page
+    return render_template('report_success.html', ticket_id=passed_id)
 
 
 # NEW Route for Citizen Screen 5: Public Board
+# 1. The Citizen's Public Board
 @app.route('/board')
 def public_board():
-    # Grab all tickets from the database
     all_tickets = Ticket.query.all()
-    # Send them to the board HTML file
-    return render_template('public_board.html', reports=all_tickets)
+    return render_template('board.html', reports=all_tickets)
+
+# 2. The Admin's Active Ledger
+@app.route('/admin/board')
+def admin_board():
+    all_tickets = Ticket.query.all()
+    return render_template('admin_board.html', reports=all_tickets)
 
 # NEW Route for Citizen Screen 6: Specific Ticket View
 # The <ticket_id> acts as a variable that changes based on what the user clicks
