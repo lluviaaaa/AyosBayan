@@ -55,8 +55,8 @@
         }
 
         .status-badge {
-            background-color: #f44336;
-            color: white;
+            background-color: #ff9999; 
+            color: #1a1a1a; /* Clean dark text */
             padding: 5px 10px;
             border-radius: 5px;
             font-size: 12px;
@@ -107,6 +107,7 @@
             border-left: 2px solid #4CAF50; 
             margin-left: 10px;
             padding-left: 20px;
+            margin-bottom: 20px;
         }
 
         .timeline-item {
@@ -136,6 +137,52 @@
             font-weight: bold;
         }
 
+        /* --- NEW: ADMIN CONTROLS CSS --- */
+        .admin-controls {
+            background-color: #2a3d2a; /* Gives it a subtle green tint so it stands out */
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #4CAF50;
+            margin-top: 20px;
+        }
+
+        .admin-controls h3 {
+            margin-top: 0;
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 15px;
+            color: #4CAF50;
+        }
+
+        .status-dropdown {
+            width: 100%;
+            padding: 12px;
+            background-color: #1a1a1a;
+            color: #f5f5dc;
+            border: 1px solid #555;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .btn-update {
+            background-color: #4CAF50;
+            color: #1a1a1a;
+            border: none;
+            padding: 15px;
+            width: 100%;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .btn-update:hover {
+            background-color: #45a049;
+        }
+
+        /* --- FULL SCREEN MODAL CSS --- */
         .modal {
             display: none; 
             position: fixed; 
@@ -169,15 +216,11 @@
             background: none;
             border: none;
         }
-
-        .close-btn:hover {
-            color: #4CAF50;
-        }
     </style>
 </head>
 <body>
 
-    <a href="/board" class="back-btn">&#8592; Back</a>
+    <a href="/board" class="back-btn" id="dynamic-back-btn">&#8592; Back</a>
 
     <div class="container">
         <h2>
@@ -202,6 +245,21 @@
                 <div class="timeline-action">Report Submitted by Resident</div>
             </div>
         </div>
+
+        <div class="admin-controls">
+            <h3>Admin Actions</h3>
+            <form action="/ticket/{{ ticket.id }}/update" method="POST">
+                
+                <select name="status" class="status-dropdown" required>
+                    <option value="Open" {% if ticket.status == 'Open' %}selected{% endif %}>Open</option>
+                    <option value="In Progress" {% if ticket.status == 'In Progress' %}selected{% endif %}>In Progress (Fixing Now)</option>
+                    <option value="Resolved" {% if ticket.status == 'Resolved' %}selected{% endif %}>Resolved (Fixed)</option>
+                </select>
+                
+                <button type="submit" class="btn-update">Save Changes</button>
+            </form>
+        </div>
+
     </div>
 
     <div id="imageModal" class="modal">
@@ -229,6 +287,11 @@
                 modal.style.display = "none";
             }
         });
+
+        // Clever trick: If they came from the admin dashboard, make the back button go to the dashboard instead of the public board!
+        if(document.referrer.includes('/admin/dashboard')) {
+            document.getElementById('dynamic-back-btn').href = '/admin/dashboard';
+        }
     </script>
 
 </body>

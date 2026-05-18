@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 import random # NEW: This lets us pick random numbers
 
 app = Flask(__name__)
@@ -65,10 +65,29 @@ def view_ticket(ticket_id):
 def admin_login():
     return render_template('admin_login.html')
 
-# Temporary placeholder for the Admin Dashboard
+
+# Route for Admin Screen 2: Main Dashboard
 @app.route('/admin/dashboard')
 def admin_dashboard():
-    return "<h1>Admin Dashboard Coming Soon!</h1>"
+    # Mock database for the admin panel (we added a few more for variety!)
+    admin_reports = [
+        {"id": "AB-1029", "type": "Deep Pothole", "street": "Rizal St.", "status": "Open", "date": "May 17, 2026"},
+        {"id": "AB-0984", "type": "Uncollected Garbage", "street": "Mabini St.", "status": "In Progress", "date": "May 16, 2026"},
+        {"id": "AB-0811", "type": "Broken Streetlight", "street": "Luna St.", "status": "Resolved", "date": "May 10, 2026"},
+        {"id": "AB-0755", "type": "Dead Animal Removal", "street": "Bonifacio St.", "status": "Open", "date": "May 18, 2026"}
+    ]
+    return render_template('admin_dashboard.html', reports=admin_reports)
+
+
+# NEW Route: Handle Admin Status Updates
+@app.route('/ticket/<ticket_id>/update', methods=['POST'])
+def update_ticket(ticket_id):
+    # This grabs the new status choice from the HTML dropdown
+    new_status = request.form.get('status')
+    
+    # In the future, this is where we will tell MySQL to save the new status!
+    # For now, we will just send the admin back to the dashboard.
+    return redirect('/admin/dashboard')
 
 
 if __name__ == '__main__':
